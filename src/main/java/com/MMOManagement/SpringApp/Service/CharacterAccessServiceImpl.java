@@ -8,6 +8,7 @@ import com.MMOManagement.SpringApp.Repository.Users.Moderation.ModeratorCzatuRep
 import com.MMOManagement.SpringApp.Repository.Users.Playerbase.GraczRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class CharacterAccessServiceImpl implements CharacterAccessService{
     public List<ModeratorCzatu> getModerators() {
         return moderatorCzatuRepository.findAll();
     }
-
+    @Transactional
     @Override
     public List<Gracz> getPlayers() {
         return graczRepository.findAll();
@@ -40,9 +41,10 @@ public class CharacterAccessServiceImpl implements CharacterAccessService{
         return avg!=null?avg:0;
     }
 
+    @Transactional
     @Override
     public void deleteCharacter(Postac postac) {
-
+    postacRepository.delete(postac);
     }
 
     @Override

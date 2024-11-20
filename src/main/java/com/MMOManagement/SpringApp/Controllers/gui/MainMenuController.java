@@ -1,25 +1,34 @@
-package com.MMOManagement.SpringApp.Controllers.gui.TODO;
+package com.MMOManagement.SpringApp.Controllers.gui;
 
 import com.MMOManagement.SpringApp.Constants.FxmlNames;
 import com.MMOManagement.SpringApp.Constants.Messages;
 import com.MMOManagement.SpringApp.Model.Users.Moderation.MistrzGry;
+import com.MMOManagement.SpringApp.Model.Users.Moderation.ModeratorCzatu;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.Gracz;
-import LegacyFiles.DatabaseManager;
+import com.MMOManagement.SpringApp.Service.CharacterAccessService;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+@Component
+public class MainMenuController extends SpringGUIController {
 
-public class MainMenuController {
+
+    @Autowired
+    CharacterAccessService characterAccessService;
 
     ObservableList<Gracz> gracze;
     @FXML
@@ -33,12 +42,13 @@ public class MainMenuController {
     @FXML
     private Button submit;
 
+    private ModeratorCzatu selectedModerator;
+
     @FXML
     public void initialize() {
-     //   gracze = FXCollections.observableArrayList(DatabaseManager.getInstance().getPlayers());
+        gracze = FXCollections.observableArrayList(characterAccessService.getPlayers());
         listaGraczy.setItems(gracze);
         listaGraczy.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
         listaGraczy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 // Assuming moderatorInfo is the Text node you want to update
@@ -51,13 +61,21 @@ public class MainMenuController {
         });
     }
 
+    public void setSelectedModerator(ModeratorCzatu selectedModerator) {
+        this.selectedModerator = selectedModerator;
+    }
+
 
     @FXML
     void back(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.MODERATORLIST));
+            loader.setControllerFactory(context::getBean);
+            Parent root = loader.load();
+            ModeratorListController controller = loader.getController();
+            controller.setContext(context);
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.setScene(new Scene(loader.load()));
+            currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,11 +85,14 @@ public class MainMenuController {
     void changestatus(ActionEvent event) {
         try {
             if (listaGraczy.getSelectionModel().getSelectedItem() != null) {
-                DatabaseManager.getInstance().setGracz(listaGraczy.getSelectionModel().getSelectedItem());
-                DatabaseManager.getInstance().checkRelation();
+                characterAccessService.checkRelation(listaGraczy.getSelectionModel().getSelectedItem(),selectedModerator);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.MESSAGE));
+                loader.setControllerFactory(context::getBean);
+                Parent root = loader.load();
+                MessageController controller = loader.getController();
+                controller.setContext(context);
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                currentStage.setScene(new Scene(loader.load()));
+                currentStage.setScene(new Scene(root));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,19 +101,27 @@ public class MainMenuController {
 
     @FXML
     void showCharacters(ActionEvent event) {
-        try {
+      try {
             if (listaGraczy.getSelectionModel().getSelectedItem() != null) {
-                if (DatabaseManager.getInstance().getModeratorCzatu().getClass() == MistrzGry.class) {
-                    DatabaseManager.getInstance().setGracz(listaGraczy.getSelectionModel().getSelectedItem());
+               if (selectedModerator.getClass() == MistrzGry.class) {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.CHARACTERS));
+                   loader.setControllerFactory(context::getBean);
+                   Parent root = loader.load();
+                   CharacterListController controller = loader.getController();
+                   controller.setContext(context);
+                   controller.setGracz(listaGraczy.getSelectionModel().getSelectedItem());
+                   controller.setModerator(selectedModerator);
                     Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    currentStage.setScene(new Scene(loader.load()));
+                    currentStage.setScene(new Scene(root));
                 } else {
-                    DatabaseManager.getInstance().setMessage(Messages.MGREQ);
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.MESSAGE));
+                    loader.setControllerFactory(context::getBean);
+                    Parent root = loader.load();
+                    MessageController controller = loader.getController();
+                    controller.setContext(context);
+                    controller.setMessage(Messages.MGREQ);
                     Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    currentStage.setScene(new Scene(loader.load()));
-                }
+                    currentStage.setScene(new Scene(root));}
 
             }
         } catch (IOException e) {

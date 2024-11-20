@@ -1,11 +1,12 @@
-package com.MMOManagement.SpringApp.Controllers.gui.TODO;
+package com.MMOManagement.SpringApp.Controllers.gui;
 
 import com.MMOManagement.SpringApp.Constants.FxmlNames;
-import LegacyFiles.DatabaseManager;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class MessageController {
+public class MessageController extends SpringGUIController {
 
     @FXML
     private Button zamknij;
@@ -27,12 +28,20 @@ public class MessageController {
 
     }
 
+    public void setMessage(String message) {
+    this.message.setText(message);
+    }
+
     @FXML
     void back(ActionEvent event) {
         try {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.MODERATORLIST));
+        loader.setControllerFactory(context::getBean);
+            Parent root=loader.load();
+            ModeratorListController controller = loader.getController();
+            controller.setContext(context);
         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        currentStage.setScene(new Scene(loader.load()));
+        currentStage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }

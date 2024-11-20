@@ -2,6 +2,7 @@ package LegacyFiles;
 
 //import com.MMOManagement.SpringApp.Constants.Messages;
 //import MMOdata.Constants.PersistenceNames;
+import com.MMOManagement.SpringApp.Constants.Messages;
 import com.MMOManagement.SpringApp.Model.Game.Characters.Postac;
 import com.MMOManagement.SpringApp.Model.Game.Characters.PostacFizyczna;
 import com.MMOManagement.SpringApp.Model.Game.Characters.PostacMagiczna;
@@ -132,11 +133,11 @@ public class DatabaseManager {
 
         em.getTransaction().commit();
         em.clear();
-        message=Messages.DELETED;
+       // message=Messages.DELETED;
     }
     private boolean checkforNull() {
         if (gracz == null || moderatorCzatu == null) {
-            message = Messages.NULL;
+        //    message = Messages.NULL;
             return true;
         }
         return false;
@@ -188,7 +189,7 @@ public class DatabaseManager {
 
     private void submit() {
         em.getTransaction().begin();
-        message = Messages.SUCCESS;
+    //    message = Messages.SUCCESS;
         gracz.setDataZmianyCzatu(Calendar.getInstance().getTime());
         if (gracz.getModeratorCzatu() != null) {
             ModeratorCzatu mode = gracz.getModeratorCzatu();
@@ -216,7 +217,7 @@ public class DatabaseManager {
         try {
             ModeratorCzatu moderator = em.find(ModeratorCzatu.class, gracz.getId());
             if (moderator != null) {
-                message = Messages.MODERATOR;
+            //    message = Messages.MODERATOR;
                 return true;
             }
         } catch (Exception e) {

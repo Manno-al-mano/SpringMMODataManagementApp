@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -21,8 +22,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class ModeratorListController {
-
+public class ModeratorListController  extends SpringGUIController {
     @Autowired
     CharacterAccessService characterAccessService;
 
@@ -48,10 +48,15 @@ public class ModeratorListController {
     void changestatus(ActionEvent event) {
         try {
             if(listaMod.getSelectionModel().getSelectedItem()!=null) {
-                ModeratorCzatu selectedModerator = listaMod.getSelectionModel().getSelectedItem();//DatabaseManager.getInstance().setModeratorCzatu(listaMod.getSelectionModel().getSelectedItem());
+                ModeratorCzatu selectedModerator = listaMod.getSelectionModel().getSelectedItem();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.MAINMENU));
+                loader.setControllerFactory(context::getBean);
+                Parent root = loader.load();
+                MainMenuController controller = loader.getController();
+                controller.setSelectedModerator(selectedModerator);
+                controller.setContext(context);
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                currentStage.setScene(new Scene(loader.load()));
+                currentStage.setScene(new Scene(root));
             }
         } catch (IOException e) {
             e.printStackTrace();

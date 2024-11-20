@@ -44,7 +44,7 @@ public class Gracz {
         return postaci;
     }
 
-    @OneToMany(mappedBy = "gracz")
+    @OneToMany(mappedBy = "gracz",fetch = FetchType.EAGER)
     private List<Postac> postaci;
 
     @OneToOne
