@@ -1,7 +1,7 @@
-package MMOdata.Logic.DatabaseOperations;
+package LegacyFiles;
 
-import MMOdata.Constants.Messages;
-import MMOdata.Constants.PersistenceNames;
+//import com.MMOManagement.SpringApp.Constants.Messages;
+//import MMOdata.Constants.PersistenceNames;
 import com.MMOManagement.SpringApp.Model.Game.Characters.Postac;
 import com.MMOManagement.SpringApp.Model.Game.Characters.PostacFizyczna;
 import com.MMOManagement.SpringApp.Model.Game.Characters.PostacMagiczna;
@@ -10,7 +10,6 @@ import com.MMOManagement.SpringApp.Model.Users.Moderation.ModeratorCzatu;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.Gracz;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
 import java.util.Calendar;
@@ -25,7 +24,7 @@ public class DatabaseManager {
     private Gracz gracz;
 
     private DatabaseManager() {
-        emf = Persistence.createEntityManagerFactory(PersistenceNames.UPDATE);
+   //     emf = Persistence.createEntityManagerFactory(PersistenceNames.UPDATE);
         em = emf.createEntityManager();
 
     }

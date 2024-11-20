@@ -1,10 +1,9 @@
-package MMOdata.UseCase.GUIControllers;
+package com.MMOManagement.SpringApp.Controllers.gui.TODO;
 
 import com.MMOManagement.SpringApp.Model.Game.Characters.Postac;
 import javafx.event.ActionEvent;
-import MMOdata.Constants.FxmlNames;
-import MMOdata.Logic.DatabaseOperations.DatabaseManager;
-import javafx.collections.FXCollections;
+import com.MMOManagement.SpringApp.Constants.FxmlNames;
+//import LegacyFiles.DatabaseManager;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +23,7 @@ public class CharacterListController {
     private ObservableList<Postac> postaci;
     @FXML
     public void initialize() {
-        postaci = FXCollections.observableArrayList(DatabaseManager.getInstance().getGracz().getPostaci());
+       // postaci = FXCollections.observableArrayList(DatabaseManager.getInstance().getGracz().getPostaci());
         listaChar.setItems(postaci);
         listaChar.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
@@ -32,7 +31,7 @@ public class CharacterListController {
     public void deleteCharacter(ActionEvent event) {
 
         Postac selected = listaChar.getSelectionModel().getSelectedItem();
-       DatabaseManager.getInstance().deleteCharacter(selected);
+     //  DatabaseManager.getInstance().deleteCharacter(selected);
        postaci.remove(listaChar.getSelectionModel().getSelectedItem());
         listaChar.setItems(postaci);
         try {

@@ -1,12 +1,11 @@
-package MMOdata.UseCase.GUIControllers;
+package com.MMOManagement.SpringApp.Controllers.gui.TODO;
 
-import MMOdata.Constants.FxmlNames;
-import MMOdata.Logic.DatabaseOperations.DatabaseManager;
+import com.MMOManagement.SpringApp.Constants.FxmlNames;
+import LegacyFiles.DatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +23,7 @@ public class MessageController {
 
     @FXML
     public void initialize() {
-        message.setText(DatabaseManager.getInstance().getMessage());
+    //    message.setText(DatabaseManager.getInstance().getMessage());
 
     }
 

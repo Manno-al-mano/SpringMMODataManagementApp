@@ -3,7 +3,6 @@ package com.MMOManagement.SpringApp.Model.Game.Characters;
 import com.MMOManagement.SpringApp.Model.Game.Items.Przedmiot;
 import com.MMOManagement.SpringApp.Model.Game.Items.PrzedmiotWEkwipunku;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.Gracz;
-import MMOdata.Logic.DatabaseOperations.DatabaseManager;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -27,12 +26,6 @@ public abstract class Postac {
     @Column (nullable = true)
     private int zloto;
 
-    private static double averageLevel;
-
-    public static double getAverageLevel() {
-        averageLevel = DatabaseManager.getInstance().takeAverageLevel();
-        return averageLevel;
-    }
 
     public Long getId() {
         return id;

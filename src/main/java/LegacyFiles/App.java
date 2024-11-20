@@ -1,7 +1,5 @@
-package MMOdata.UseCase.App;
+package LegacyFiles;
 
-import MMOdata.Logic.DatabaseOperations.DatabaseManager;
-import MMOdata.UseCase.GUIControllers.MainMenuController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

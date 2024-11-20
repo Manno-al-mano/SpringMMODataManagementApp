@@ -1,4 +1,4 @@
-package MMOdata.UseCase.App;
+package LegacyFiles;
 
 public class Main {
     public static void main(String[] args) {

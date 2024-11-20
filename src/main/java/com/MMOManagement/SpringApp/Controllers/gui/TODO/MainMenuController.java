@@ -1,11 +1,10 @@
-package MMOdata.UseCase.GUIControllers;
+package com.MMOManagement.SpringApp.Controllers.gui.TODO;
 
-import MMOdata.Constants.FxmlNames;
-import MMOdata.Constants.Messages;
+import com.MMOManagement.SpringApp.Constants.FxmlNames;
+import com.MMOManagement.SpringApp.Constants.Messages;
 import com.MMOManagement.SpringApp.Model.Users.Moderation.MistrzGry;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.Gracz;
-import MMOdata.Logic.DatabaseOperations.DatabaseManager;
-import javafx.collections.FXCollections;
+import LegacyFiles.DatabaseManager;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +35,7 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
-        gracze = FXCollections.observableArrayList(DatabaseManager.getInstance().getPlayers());
+     //   gracze = FXCollections.observableArrayList(DatabaseManager.getInstance().getPlayers());
         listaGraczy.setItems(gracze);
         listaGraczy.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
