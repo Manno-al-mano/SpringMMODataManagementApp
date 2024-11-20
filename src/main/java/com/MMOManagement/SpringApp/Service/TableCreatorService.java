@@ -1,6 +1,5 @@
-package MMOdata.Logic.DatabaseOperations;
+package com.MMOManagement.SpringApp.Service;
 
-import MMOdata.Constants.PersistenceNames;
 import com.MMOManagement.SpringApp.Model.Game.Characters.*;
 import com.MMOManagement.SpringApp.Model.Game.Items.Artefakt;
 import com.MMOManagement.SpringApp.Model.Game.Items.Bron;
@@ -14,33 +13,54 @@ import com.MMOManagement.SpringApp.Model.Users.Osoba;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.Gracz;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.Klan;
 import com.MMOManagement.SpringApp.Model.Users.Playerbase.PrzywodcaKlanu;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
+import com.MMOManagement.SpringApp.Repository.Game.Characters.AspektRepository;
+import com.MMOManagement.SpringApp.Repository.Game.Characters.AtrybutRepository;
+import com.MMOManagement.SpringApp.Repository.Game.Characters.PostacRepository;
+import com.MMOManagement.SpringApp.Repository.Game.Items.ArtefaktRepository;
+import com.MMOManagement.SpringApp.Repository.Game.Items.BronRepository;
+import com.MMOManagement.SpringApp.Repository.Game.Items.PrzedmiotRepository;
+import com.MMOManagement.SpringApp.Repository.Users.Moderation.MistrzGryRepository;
+import com.MMOManagement.SpringApp.Repository.Users.Moderation.ModeratorCzatuRepository;
+import com.MMOManagement.SpringApp.Repository.Users.OsobaRepository;
+import com.MMOManagement.SpringApp.Repository.Users.Playerbase.GraczRepository;
+import com.MMOManagement.SpringApp.Repository.Users.Playerbase.KlanRepository;
+import com.MMOManagement.SpringApp.Repository.Users.Playerbase.PrzywodcaKlanuRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 
-public class TableCreator {
-    public static void createTable() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PersistenceNames.CREATE);
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            fillWithData(em);
-            em.getTransaction().commit();
-            System.out.println("Connected to the database successfully.");
-        } catch (Exception e) {
-            System.out.println("Failed to connect to the database: " + e.getMessage());
-        }
-
-        em.close();
-        emf.close();
-    }
-
-    public static void fillWithData(EntityManager em) {
+@Service
+public class TableCreatorService {
+    @Autowired
+    ModeratorCzatuRepository moderatorCzatuRepository;
+    @Autowired
+    private AspektRepository aspektRepository;
+    @Autowired
+    private OsobaRepository osobaRepository;
+    @Autowired
+    private PrzywodcaKlanuRepository przywodcaKlanuRepository;
+    @Autowired
+    private GraczRepository graczRepository;
+    @Autowired
+    private MistrzGryRepository mistrzGryRepository;
+    @Autowired
+    private KlanRepository klanRepository;
+    @Autowired
+    private PostacRepository postacRepository;
+    @Autowired
+    private AtrybutRepository atrybutRepository;
+    @Autowired
+    private PrzedmiotRepository przedmiotRepository;
+    @Autowired
+    private BronRepository bronRepository;
+    @Autowired
+    private ArtefaktRepository artefaktRepository;
+    @Transactional
+    public void createTable() {
         Osoba osoba1 = new Osoba("Martin", "Peterson", "aaa@mail.com");
-
         Osoba osoba2 = new Osoba("John", "Smith", "bbb@mail.com");
         Osoba osoba3 = new Osoba("Will", "Kowalsky", "ccc@mail.com");
         Osoba osoba4 = new Osoba("Jan", "Iksinski", "ddd@mail.com");
@@ -177,54 +197,44 @@ public class TableCreator {
         aspekt1.addArtefakt(artefakt2);
         aspekt4.addArtefakt(artefakt3);
 
-        em.persist(gracz1);
-        em.persist(gracz2);
-        em.persist(gracz3);
-        em.persist(szef1);
-        em.persist(szef2);
-
-        em.persist(bron1);
-        em.persist(bron2);
-        em.persist(przedmiot1);
-        em.persist(przedmiot2);
-        em.persist(przedmiot3);
-        em.persist(atrybut1);
-        em.persist(atrybut2);
-        em.persist(atrybut3);
-        em.persist(atrybut4);
-        em.persist(atrybut5);
-        em.persist(atrybut6);
-        em.persist(aspekt1);
-        em.persist(aspekt2);
-        em.persist(aspekt3);
-        em.persist(aspekt4);
-        em.persist(aspekt5);
-        em.persist(aspekt6);
-        em.persist(aspekt7);
-        em.persist(aspekt8);
-        em.persist(aspekt9);
-        em.persist(aspekt10);
-        em.persist(postac1);
-        em.persist(postac2);
-        em.persist(postac3);
-        em.persist(postac4);
-        em.persist(postac5);
-        em.persist(postac6);
-        em.persist(postac7);
-        em.persist(postac8);
-        em.persist(postac9);
-        em.persist(postac10);
-        em.persist(master);
-        em.persist(mg1);
-        em.persist(moderatorCzatu);
-
-    }
-
-
-    public static void main(String[] args) {
-        createTable();
+        graczRepository.save(gracz1);
+        graczRepository.save(gracz2);
+        graczRepository.save(gracz3);
+        przywodcaKlanuRepository.save(szef1);
+        przywodcaKlanuRepository.save(szef2);
+        bronRepository.save(bron1);
+        bronRepository.save(bron2);
+        przedmiotRepository.save(przedmiot1);
+        przedmiotRepository.save(przedmiot2);
+        przedmiotRepository.save(przedmiot3);
+        atrybutRepository.save(atrybut1);
+        atrybutRepository.save(atrybut2);
+        atrybutRepository.save(atrybut3);
+        atrybutRepository.save(atrybut4);
+        atrybutRepository.save(atrybut5);
+        atrybutRepository.save(atrybut6);
+        aspektRepository.save(aspekt1);
+        aspektRepository.save(aspekt2);
+        aspektRepository.save(aspekt3);
+        aspektRepository.save(aspekt4);
+        aspektRepository.save(aspekt5);
+        aspektRepository.save(aspekt6);
+        aspektRepository.save(aspekt7);
+        aspektRepository.save(aspekt8);
+        aspektRepository.save(aspekt9);
+        aspektRepository.save(aspekt10);
+        postacRepository.save(postac1);
+        postacRepository.save(postac2);
+        postacRepository.save(postac3);
+        postacRepository.save(postac4);
+        postacRepository.save(postac5);
+        postacRepository.save(postac6);
+        postacRepository.save(postac7);
+        postacRepository.save(postac8);
+        postacRepository.save(postac9);
+        postacRepository.save(postac10);
+        mistrzGryRepository.save(master);
+        mistrzGryRepository.save(mg1);
+        moderatorCzatuRepository.save(moderatorCzatu);
     }
 }
-
-
-
