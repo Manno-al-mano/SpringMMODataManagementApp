@@ -15,7 +15,7 @@ public class ModeratorCzatu {
     private Long id;
     public ModeratorCzatu(){
     }
-    @OneToMany(mappedBy = "moderatorCzatu")
+    @OneToMany(mappedBy = "moderatorCzatu",fetch = FetchType.EAGER)
     private List<Gracz> gracze;
 
     @OneToOne
