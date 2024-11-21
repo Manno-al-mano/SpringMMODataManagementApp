@@ -113,7 +113,6 @@ public class DatabaseManager {
 
         charToDelete.getPrzedmioty().clear();
        charToDelete.getAtrybuty().clear();
-     //  em.merge(charToDelete);
 
         if(postac.getAspekt().getClass()== PostacMagiczna.class){
             PostacMagiczna postacMagiczna = (PostacMagiczna) charToDelete.getAspekt();
@@ -176,7 +175,7 @@ public class DatabaseManager {
     }
 
 
-    private boolean checkMode() {
+    private boolean checkMode(Gracz gracz, ModeratorCzatu moderatorCzatu) {
         if (gracz.getModeratorCzatu() == null)
             return false;
         ModeratorCzatu mode = gracz.getModeratorCzatu();

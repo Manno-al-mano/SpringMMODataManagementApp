@@ -27,7 +27,7 @@ public class PostacMagiczna extends Aspekt{
         this.mana = mana;
     }
 
-    @ManyToMany (cascade = {CascadeType.ALL})
+    @ManyToMany (cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(
             name = "ZakleciaPostaci",
             joinColumns = @JoinColumn(name = "postac_id"),

@@ -13,7 +13,7 @@
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="160.0" layoutY="14.0" prefHeight="25.0" prefWidth="280.0" text="Lista Graczy" />
       <ButtonBar layoutX="199.0" layoutY="346.0" prefHeight="40.0" prefWidth="387.0">
         <buttons>
-            <Button fx:id="Characters" mnemonicParsing="false" onAction="#showCharacters" text="Pokaż Postaci" />
+            <Button fx:id="characters" mnemonicParsing="false" onAction="#showCharacters" text="Pokaż Postaci" />
           <Button fx:id="submit" mnemonicParsing="false" onAction="#changestatus" prefHeight="25.0" prefWidth="150.0" text="Zmień Dostęp" />
             <Button fx:id="powrot" mnemonicParsing="false" onAction="#back" text="Powrót" />
         </buttons>

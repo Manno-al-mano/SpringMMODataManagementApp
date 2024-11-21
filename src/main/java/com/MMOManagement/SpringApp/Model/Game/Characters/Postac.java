@@ -35,10 +35,10 @@ public abstract class Postac {
     @JoinColumn(name = "gracz_id")
     private Gracz gracz;
 
-    @OneToMany(mappedBy = "postac",cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "postac",cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     private List<PrzedmiotWEkwipunku> przedmioty;
 
-    @OneToMany(mappedBy = "postac", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "postac", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<AtrybutyPostaci> atrybuty;
 
     @OneToOne(mappedBy = "postac", cascade = CascadeType.ALL)

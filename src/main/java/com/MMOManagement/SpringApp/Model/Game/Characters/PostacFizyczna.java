@@ -15,7 +15,7 @@ public class PostacFizyczna extends Aspekt{
     artefakty= new TreeMap<>();
     }
 
-    @OneToMany(mappedBy = "postacFizyczna", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "postacFizyczna", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @MapKey(name = "nazwa")
     private Map<String, Artefakt> artefakty ;
     private PostacFizyczna(){}

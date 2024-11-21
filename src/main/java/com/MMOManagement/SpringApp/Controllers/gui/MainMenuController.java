@@ -23,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Optional;
+
 @Component
 public class MainMenuController extends SpringGUIController {
 
@@ -30,6 +33,7 @@ public class MainMenuController extends SpringGUIController {
     @Autowired
     CharacterAccessService characterAccessService;
 
+    private String message;
     ObservableList<Gracz> gracze;
     @FXML
     private ListView<Gracz> listaGraczy;
@@ -50,14 +54,10 @@ public class MainMenuController extends SpringGUIController {
         listaGraczy.setItems(gracze);
         listaGraczy.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listaGraczy.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                // Assuming moderatorInfo is the Text node you want to update
-                moderatorInfo.setText((gracze.get(listaGraczy.getSelectionModel().getSelectedIndex()).getModeratorCzatu() == null) ?
-                        "Brak ostatniego Moderatora" :
-                        ((listaGraczy.getSelectionModel().getSelectedItem()).getModeratorCzatu().toString())
-                );
-
-            }
+            boolean noSelection = newValue == null;
+            characters.setDisable(noSelection);
+            submit.setDisable(noSelection);
+            moderatorInfo.setText(noSelection ? "" : newValue.getModeratorCzatu() == null ? "Brak ostatniego Moderatora" : newValue.getModeratorCzatu().toString());
         });
     }
 
@@ -81,16 +81,80 @@ public class MainMenuController extends SpringGUIController {
         }
     }
 
+    private int assignValue(ModeratorCzatu mode) {
+      Optional<MistrzGry> master = characterAccessService.getMistrzGry(mode.getId());
+        if (master.isEmpty()) {
+            return 0;
+        }
+        MistrzGry mg = master.get();
+        switch (mg.getRanga()) {
+            case podstawowy:
+                return 1;
+            case starszy:
+                return 2;
+            case glowny:
+                return 3;
+        }
+        return 0;
+    }
+    private boolean checkDate(Gracz gracz) {
+        if(gracz.getDataZmianyCzatu()==null)
+            return true;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -3);
+        return gracz.getDataZmianyCzatu().after(calendar.getTime());
+    }
+    private boolean checkforNull(Gracz gracz, ModeratorCzatu moderatorCzatu) {
+        if (gracz == null || moderatorCzatu == null) {
+               message = Messages.NULL;
+            return true;
+        }
+        return false;
+    }
+    private boolean checkMode(Gracz gracz, ModeratorCzatu moderatorCzatu) {
+        if (gracz.getModeratorCzatu() == null)
+            return false;
+        ModeratorCzatu mode = gracz.getModeratorCzatu();
+        if (assignValue(moderatorCzatu) >= assignValue(mode))
+            return false;
+
+        message = Messages.HIGHRANK;
+        return true;
+    }
+    private boolean isModerator(Gracz gracz) {
+
+            Optional<ModeratorCzatu> moderator = characterAccessService.getModerator(gracz.getId());
+            if (moderator.isPresent()) {
+                 message = Messages.MODERATOR;
+                return true;
+        }
+        return false;
+    }
+    private boolean checkRelation(Gracz gracz, ModeratorCzatu moderatorCzatu){
+        if(checkforNull(gracz,moderatorCzatu)) return false;
+        if(isModerator(gracz)) return false;
+        if(checkDate(gracz)){
+            if(checkMode(gracz,moderatorCzatu)) return false;
+            message=Messages.SUCCESS;
+            return true;
+        }
+
+return true;
+    }
+
     @FXML
     void changestatus(ActionEvent event) {
         try {
             if (listaGraczy.getSelectionModel().getSelectedItem() != null) {
-                characterAccessService.checkRelation(listaGraczy.getSelectionModel().getSelectedItem(),selectedModerator);
+                if(checkRelation(listaGraczy.getSelectionModel().getSelectedItem(),selectedModerator)){
+                    characterAccessService.setRelation(listaGraczy.getSelectionModel().getSelectedItem(),selectedModerator);
+                }
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(FxmlNames.MESSAGE));
                 loader.setControllerFactory(context::getBean);
                 Parent root = loader.load();
                 MessageController controller = loader.getController();
                 controller.setContext(context);
+                controller.setMessage(message);
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 currentStage.setScene(new Scene(root));
             }

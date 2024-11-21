@@ -11,9 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-
+@Component
 public class MessageController extends SpringGUIController {
 
     @FXML
